@@ -70,7 +70,7 @@ function NavMob() {
           className="flex items-center space-x-2 rtl:space-x-reverse"
         >
           <img
-            src="https://vrtpage.vercel.app/vrtl.png"
+            src="/vrtlogo.png"
             alt="logo"
             className="w-full h-12"
           />
@@ -79,10 +79,10 @@ function NavMob() {
         {/* Right side buttons */}
         <div className="flex items-center space-x-2">
           <button
-            className="w-10 h-10 flex items-center justify-center rounded-full dark:bg-[#101010] dark:border-none bg-white border border-zinc-200 transition duration-300"
+            className="w-10 h-10 flex items-center justify-center rounded-full  bg-white border border-zinc-200 transition duration-300"
             onClick={toggleMenu}
           >
-            <span className="text-sm dark:text-[#ffffff] text-[#0c0c0c]">
+            <span className="text-sm  text-[#0c0c0c]">
               ☰
             </span>
           </button>
@@ -91,24 +91,24 @@ function NavMob() {
         {/* Fullscreen Menu Overlay */}
         <div
           ref={menuRef}
-          className={`fixed inset-0 bg-[#faf9f6] dark:bg-[#010202] text-black z-50`}
+          className={`fixed inset-0 bg-[#faf9f6]  text-black z-50`}
           style={{ transform: isOpen ? "translateX(0)" : "translateX(100%)" }}
         >
           {/* Top bar with logo and close button */}
-          <div className="flex justify-between items-center p-4 border-b dark:border-zinc-800 border-zinc-200">
+          <div className="flex justify-between items-center p-4 border-b  border-zinc-200">
             <Link
               href="/"
               className="flex items-center space-x-2 rtl:space-x-reverse"
             >
               <img
-                src="https://vrtpage.vercel.app/vrtl.png"
+                src="/vrtlogo.png"
                 alt="logo"
                 className="w-full h-12"
               />
             </Link>
 
             <button
-              className="h-10 w-10 rounded-full border dark:text-[#ffffff] border-zinc-200 dark:border-zinc-700 text-[#0c0c0c]"
+              className="h-10 w-10 rounded-full border  border-zinc-200  text-[#0c0c0c]"
               onClick={toggleMenu}
             >
               ✕
@@ -173,7 +173,7 @@ function NavMob() {
               <React.Fragment key={index}>
                 <div>
                   <button
-                    className={`hover:text-teal-500 transition w-full text-left ${
+                    className={`hover:text-[#ff0000] transition w-full text-left ${
                       selectedMenu !== null && index !== selectedMenu
                         ? "grayscale opacity-20"
                         : ""
@@ -195,7 +195,7 @@ function NavMob() {
                         href={subItem.path}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="block hover:text-teal-500 dark:text-[#ffffff] transition"
+                        className="block hover:text-teal-500  transition"
                         onClick={() => handleMenuClick(index)}
                       >
                         <span className="text-lg">{subItem.name}</span>
@@ -209,11 +209,11 @@ function NavMob() {
 
           {/* Contact details - moved to the bottom */}
           <div className="px-6 mt-4 flex flex-col ">
-            <h2 className="text-[#989999] dark:text-[#ffffff] uppercase small text-sm mb-8">
+            <h2 className="text-[#989999]  uppercase small text-sm mb-8">
               Get in touch
             </h2>
 
-            <div className="lg:text-lg flex items-center gap-4 mb-4 dark:text-[#ffffff] text-[#0c0c0c] text-lg small">
+            <div className="lg:text-lg flex items-center gap-4 mb-4  text-[#0c0c0c] text-lg small">
               <img
                 src="https://www.svgrepo.com/show/488920/email.svg"
                 alt="email"
@@ -227,7 +227,7 @@ function NavMob() {
               </a>
             </div>
 
-            <div className="lg:text-lg flex items-center gap-4 mb-4 dark:text-[#ffffff] text-[#0c0c0c] text-lg small">
+            <div className="lg:text-lg flex items-center gap-4 mb-4  text-[#0c0c0c] text-lg small">
               <img
                 src="/phone.svg"
                 alt="call"
@@ -241,7 +241,7 @@ function NavMob() {
               </a>
             </div>
 
-            <div className="lg:text-lg flex items-center gap-4 mb-4 dark:text-[#ffffff] text-[#0c0c0c] text-lg small">
+            <div className="lg:text-lg flex items-center gap-4 mb-4  text-[#0c0c0c] text-lg small">
               <img
                 src="https://www.svgrepo.com/show/497239/location.svg"
                 alt="location"

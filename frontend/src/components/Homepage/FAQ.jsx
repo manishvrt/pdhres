@@ -65,14 +65,14 @@ const FAQ = () => {
               <div
                 key={index}
                 onClick={() => toggleCard(index)}
-                className="w-full p-6 flex max-w-5xl mx-auto flex-col cursor-pointer bg-[#ececec]/60 dark:bg-[#101010] h-auto rounded-3xl"
+                className="w-full p-6 flex max-w-5xl mx-auto flex-col cursor-pointer bg-[#ececec]/60  h-auto rounded-3xl"
               >
                 <div className="flex justify-between items-center ">
-                  <h1 className="small text-md lg:text-xl dark:text-[#ffffff] text-[#0c0c0c]">
+                  <h1 className="small text-md lg:text-xl  text-[#0c0c0c]">
                     {faq.question}
                   </h1>
                   <span
-                    className={`bg-[#0c0c0c] hidden lg:block dark:bg-[#26282C]
+                    className={`bg-[#0c0c0c] hidden lg:block 
                       lg:flex justify-center items-center h-8 w-8 rounded-full transition-transform duration-500 ${
                         openIndex === index ? "rotate-90" : ""
                       }`}
@@ -91,7 +91,7 @@ const FAQ = () => {
                   className="overflow-hidden"
                   style={{ height: 0, opacity: 0 }}
                 >
-                  <p className="mt-4 small dark:text-[#989999] text-md lg:text-lg text-zinc-700">
+                  <p className="mt-4 small  text-md lg:text-lg text-zinc-700">
                     {faq.answer}
                   </p>
                 </div>
@@ -111,7 +111,7 @@ const faqData = [
       "With the dramatic changes in the business landscape over the past 5-10 years, we are updating our understanding of entrepreneurial success traits for the modern era.",
   },
   {
-    question: "What makes the TRI-METRIX HD assessment valuable?",
+    question: "What makes the Tri Metrix HD assessment valuable?",
     answer:
       "This comprehensive tool analyzes your behaviors, driving forces, and competencies, providing actionable insights for business growth and leadership development.",
   },

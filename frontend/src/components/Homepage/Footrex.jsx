@@ -20,12 +20,12 @@ const Footer = () => {
   };
 
   return (
-    <div className=" h-auto lg:py-0 bg-[#ffffff] dark:bg-[#0c0c0c] dark:border-t dark:border-zinc-900 ">
+    <div className=" h-auto lg:py-0 bg-[#ffffff]   ">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 m-4  lg:m-0 lg:grid-cols-5 items-center gap-6">
           <div className="flex lg:col-span-2 flex-col">
             <div className="flex mt-12 lg:mt-16 flex-col">
-              <h1 className="gsans font-semibold text-4xl lg:text-5xl dark:text-[#ffffff] text-[#0c0c0c]">
+              <h1 className="gsans font-semibold text-4xl lg:text-5xl  text-[#0c0c0c]">
                 Let’s talk about
                 <br />
                 your vision
@@ -46,11 +46,11 @@ const Footer = () => {
               </div>
             </div>
             <div className="lg:mt-16 mt-10 flex flex-col items-start justify-end">
-              <h2 className="text-[#989999] dark:text-[#ffffff] uppercase small text-sm mb-8">
+              <h2 className="text-[#989999]  uppercase small text-sm mb-8">
                 Get in touch
               </h2>
 
-              <div className="lg:text-lg flex items-center gap-4 mb-4 dark:text-[#ffffff] text-[#0c0c0c] text-lg small">
+              <div className="lg:text-lg flex items-center gap-4 mb-4  text-[#0c0c0c] text-lg small">
                 <img
                   src="https://www.svgrepo.com/show/488920/email.svg"
                   alt="email"
@@ -60,11 +60,11 @@ const Footer = () => {
                   href="mailto:coachraj@vrt9.com"
                   className="text-inherit hover:underline"
                 >
-                  coachraj@vrt9.com
+                  coachrajesh@vrt9.com
                 </a>
               </div>
 
-              <div className="lg:text-lg flex items-center gap-4 mb-4 dark:text-[#ffffff] text-[#0c0c0c] text-lg small">
+              <div className="lg:text-lg flex items-center gap-4 mb-4  text-[#0c0c0c] text-lg small">
                 <img
                   src="/phone.svg"
                   alt="call"
@@ -78,7 +78,7 @@ const Footer = () => {
                 </a>
               </div>
 
-              <div className="lg:text-lg flex items-center gap-4 mb-4 dark:text-[#ffffff] text-[#0c0c0c] text-lg small">
+              <div className="lg:text-lg flex items-center gap-4 mb-4  text-[#0c0c0c] text-lg small">
                 <img
                   src="https://www.svgrepo.com/show/497239/location.svg"
                   alt="location"
@@ -103,7 +103,7 @@ const Footer = () => {
           <div className="flex justify-center items-center gap-8">
             <Link
               href="/"
-              className="small  lg:text-[18px] text-[16px]  dark:text-gray-300 text-[#787878]"
+              className="small  lg:text-[18px] text-[16px]   text-[#787878]"
             >
               Home
             </Link>
@@ -112,7 +112,7 @@ const Footer = () => {
               href="https://vrtmanagementgroup.com/results"
               target="_blank"
               rel="noopener noreferrer"
-              className="small   text-[18px]  dark:text-gray-300 text-[#787878]"
+              className="small   text-[18px]   text-[#787878]"
             >
               Clients
             </a>
@@ -121,7 +121,7 @@ const Footer = () => {
               href="https://vrtmanagementgroup.com/blogs"
               target="_blank"
               rel="noopener noreferrer"
-              className="small   text-[18px]  dark:text-gray-300  text-[#787878]"
+              className="small   text-[18px]   text-[#787878]"
             >
               Blog
             </a>
@@ -129,14 +129,14 @@ const Footer = () => {
               href="https://vrtmanagementgroup.com/who-we-are"
               target="_blank"
               rel="noopener noreferrer"
-              className="small   text-[18px]  dark:text-gray-300  text-[#787878]"
+              className="small   text-[18px]    text-[#787878]"
             >
               About Us
             </a>
           </div>
 
           <div className="flex flex-col lg:flex-row lg:gap-6  justify-center lg:mt-0 mt-6 items-center ">
-            <h1 className="small mb-6 lg:mb-0 mt-3 lg:mt-0 lg:text-[17px] text-xs dark:text-[#ffffff] text-[#787878]">
+            <h1 className="small mb-6 lg:mb-0 mt-3 lg:mt-0 lg:text-[17px] text-xs  text-[#787878]">
               Follow us on
             </h1>
             <div className="flex justify-center items-center gap-5 lg:gap-2">
@@ -196,7 +196,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="bg-[#f1f1f1] dark:bg-[#141414] flex justify-center items-center h-16">
+      <div className="bg-[#f1f1f1]  flex justify-center items-center h-16">
         <div className="flex flex-col max-w-7xl mx-auto w-full lg:flex-row items-center justify-center">
           {/* Left Section */}
           <div className="flex small items-center gap-2 lg:gap-2">

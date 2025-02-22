@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import Button from "../Reusables/Button";
 import useScrollAnimation from "../Hooks/useScrollAnimation";
@@ -7,101 +8,104 @@ const Hero = () => {
   const scrollToSurvey = () => {
     const nextSection = document.getElementById("Survey");
     if (nextSection) {
-        nextSection.scrollIntoView({ behavior: "smooth" });
+      nextSection.scrollIntoView({ behavior: "smooth" });
     }
-};
+  };
 
-const scrollToResearch = () => {
+  const scrollToResearch = () => {
     const nextSection = document.getElementById("Research");
     if (nextSection) {
-        nextSection.scrollIntoView({ behavior: "smooth" });
+      nextSection.scrollIntoView({ behavior: "smooth" });
     }
-};
+  };
   return (
-    <div className=" px-2 pt-20 lg:pt-24 lg:px-6">
+    <div className=" px-2 pt-20 lg:pt-28 lg:px-6">
       <div className="relative bg-[#ffffff]  rounded-[40px]">
         {/* Container */}
-        <div className="flex max-w-7xl mx-auto justify-center items-center h-auto p-4 lg:p-24">
-          <div className="flex flex-col justify-center items-center">
-            {/* Heading Section */}
-            <span className="flex border text-xs lg:text-[15px] mt-6 lg:mt-0 border-zinc-200 gap-2 justify-center items-center small bg-[#ffffff] h-6 lg:h-8 w-fit px-4 lg:px-6 rounded-3xl">
-              <img
-                src="/thunder.svg"
-                alt="arrow"
-                className="w-4 h-4 object-cover"
-              />
-              Entrepreneurial Success
-            </span>
-            <h1 className="gsans font-bold mt-12 text-[#0c0c0c] text-4xl  lg:text-7xl text-center">
-              Shape the Future of Entrepreneurial Success with Us
-            </h1>
-            <p className="text-[#0c0c0c]/70 max-w-5xl text-center text-sm lg:text-lg mt-10 small">
-              Be part of an exclusive research study led by Rajesh Tedla,
-              CEO of VRT Management Group as a part of his Doctorate in Business
-              Administration from Swiss School of Business aimed to identify the
-              behavioral patterns that drive entrepreneurial success. Limited to
-              1,000 qualified participants. Unlock premium tools and gain access
-              to the Entrepreneur Edge<sup>TM</sup> Program, including Tri-Metrix
-              assessments, GAP Reports, and Personal Development Plans - valued
-              at $2,000.
-            </p>
-            {/* Buttons */}
-            <div className="flex flex-col lg:flex-row mb-6 gap-6 items-center mt-14">
-              <Button
-              onClick={scrollToSurvey}
-                text="Check Your Eligibility Now"
-                className="w-fit text-[#ffffff] font-semibold text-xs lg:text-[16px] small tracking-wide bg-[#ff0000] h-14 px-6"
-              />
-              <Button
-              onClick={scrollToResearch}
-                text="Explore more"
-                className="w-fit text-[#ffffff] text-xs lg:text-[16px] font-semibold small tracking-wide bg-[#0c0c0c] h-14 px-6"
-              />
+        <section className="bg- rounded-[40px] overflow-hidden">
+          <div className="flex flex-col lg:flex-row lg:items-stretch h-auto ">
+            <div className="relative order-last lg:order-1 flex items-center justify-center w-full  lg:w-7/12">
+              <div className="absolute bottom-0 right-0 hidden lg:block">
+                {/* <img
+                  className="object-contain w-auto h-48"
+                  src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/3/curved-lines.png"
+                  alt=""
+                /> */}
+              </div>
+
+              <div className="relative  lg:py-12   text-center  2xl:px-12 lg:text-left">
+                <h1 className="text-3xl mt-12 lg:mt-0 gsans font-bold text-black  xl:text-5xl">
+                  Shape the future of Entrepreneurial success with us through
+                  research
+                </h1>
+                <p className="mt-8 px-4 tracking-tight lg:px-0 text-sm lg:text-lg text-justify small text-black">
+                  Did you know that{" "}
+                  <span className="text-[#ff0000] font-bold tracking-wide">
+                    80% of entrepreneur - led businesses fail within five years,
+                    and only 5% survive beyond ten?
+                  </span>{" "}
+                  That’s a shocking number - but we can work together to change
+                  it.
+                </p>
+                <p className="mt-4 tracking-tight px-4 lg:px-0 text-sm lg:text-lg text-justify small text-black">
+                  We’re inviting successful entrepreneurs like you to join a
+                  groundbreaking PhD research study that aims to find out what
+                  truly makes an entrepreneur successful to thrive in Business
+                  Growth. By sharing your experiences, you won’t just be helping
+                  one researcher - you’ll be helping countless future
+                  entrepreneurs understand the secrets to long-term success.
+                </p>
+                <p className="mt-4 tracking-tight px-4 lg:px-0 text-sm lg:text-lg text-justify small text-black">
+                  When you participate in the survey, you’re not just giving
+                  your insights; you’re shaping the way tomorrow’s entrepreneurs
+                  build and grow their businesses. Your Insights matters.
+                  Together, let’s make a real difference and raise the success
+                  rate for everyone who dares to dream big. Will you join us?
+                </p>
+
+                <div className="flex flex-col lg:flex-row mb-6 gap-6 items-center mt-14">
+                  <a
+                    href="https://www.surveymonkey.com/r/Entrepreneur_Edge"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button
+                      text="Let's get the Survey done!"
+                      className="w-fit text-[#ffffff] font-semibold text-xs lg:text-[16px] small tracking-wide bg-[#ff0000] h-14 px-6"
+                    />
+                  </a>
+                  <Button
+                    onClick={scrollToResearch}
+                    text="Explore more"
+                    className="w-fit text-[#ffffff] text-xs lg:text-[16px] font-semibold small tracking-wide bg-[#0c0c0c] h-14 px-6"
+                  />
+                </div>
+              </div>
+
+              {/* <div className="absolute right-0 z-10 -bottom-16 lg:top-24 lg:-left-20">
+                <img
+                  className="w-32 h-32 md:w-40 md:h-40"
+                  src="https://cdn.rareblocks.xyz/collection/celebration/images/hero/3/circular-text.png"
+                  alt=""
+                />
+              </div> */}
+            </div>
+
+            <div className="relative w-full overflow-hidden lg:order-last h-96 lg:h-auto lg:w-5/12">
+              <div className="absolute inset-0">
+                <img
+                  className=" object-cover object-center"
+                  src="/RajeshTedla.jpg"
+                  alt=""
+                />
+              </div>
+
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
             </div>
           </div>
-        </div>
+        </section>
 
         {/* Decorative Icons */}
-        <div
-          ref={getCardRef}
-          className="absolute hidden lg:block border-4 border-[#ffffff] top-14 left-24 -translate-x-1/4 w-32 h-32 rounded-full overflow-hidden"
-        >
-          <img
-            src="https://assets.lummi.ai/assets/QmeKeBhHFW3KBshwz4qih6cieenaEEPXB5jiFU7ovft2kB?auto=format&w=1500"
-            alt="Team collaboration"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div
-          ref={getCardRef}
-          className="absolute hidden lg:block border-4 border-[#ffffff] bottom-40 left-32 -translate-x-1/4 w-32 h-32 rounded-full overflow-hidden"
-        >
-          <img
-            src="https://assets.lummi.ai/assets/QmZKH2iWwBQJWHopYUtnbqvtstXytRJrmyyHLWJMKxiwPw?auto=format&w=1500"
-            alt="Team collaboration"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div
-          ref={getCardRef}
-          className="absolute hidden lg:block border-4 border-[#ffffff] top-10 right-10 -translate-x-1/4 w-32 h-32 rounded-full overflow-hidden"
-        >
-          <img
-            src="https://assets.lummi.ai/assets/QmVjbhjaBw36AKzizdNEJuHnncfGDE3XTmruJKMvBbr3rY?auto=format&w=1500"
-            alt="Team collaboration"
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div
-          ref={getCardRef}
-          className="absolute hidden lg:block border-4 border-[#ffffff] bottom-36 right-32 -translate-x-1/4 w-32 h-32 rounded-full overflow-hidden"
-        >
-          <img
-            src="https://assets.lummi.ai/assets/QmRrAz9Hd3SN6yGrqid1RZBaj64QpAnH22B9qBRKBwnY1W?auto=format&w=1500"
-            alt="Team collaboration"
-            className="w-full h-full object-cover"
-          />
-        </div>
       </div>
     </div>
   );

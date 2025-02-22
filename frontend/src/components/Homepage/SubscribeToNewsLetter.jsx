@@ -24,7 +24,7 @@ const SubscribeToNewsLetter = () => {
       {/* Content */}
       <div className="flex flex-col lg:flex-row gap-10 items-center justify-between">
         <img
-          src="https://vrtpage.vercel.app/vrtl.png"
+          src="/vrtlogo.png"
           alt="subscribe"
           className="lg:w-52  lg:h-28"
         />

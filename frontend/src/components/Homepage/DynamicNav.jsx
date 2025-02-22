@@ -1,10 +1,11 @@
 import React from 'react'
 import MobNav from './MobNav'
 import LapNav from './LapNav'
+import Navbar from './Navbar'
 const DynamicNavbar = () => {
   return (
     <div>
-      <LapNav />
+      <Navbar />
       <MobNav/>
     </div>
   )

@@ -178,7 +178,7 @@ const Navbar = () => {
           className="flex items-center space-x-2 rtl:space-x-reverse"
         >
           <img
-            src="https://vrtpage.vercel.app/vrtl.png"
+            src="/vrtlogo.png"
             alt="logo"
             className="w-full h-16"
           />

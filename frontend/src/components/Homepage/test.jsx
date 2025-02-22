@@ -1,213 +1,51 @@
 "use client";
-import React, { useState } from "react";
-import Input from "../Reusables/Input";
-import Button from "../Reusables/Button";
-import Toast from "../Reusables/Toast";
-import ReCAPTCHA from "react-google-recaptcha";
+import React from "react";
 
-const QualiForm = () => {
-  const [isSurveyStarted, setIsSurveyStarted] = useState(false);
-  const [personalDetails, setPersonalDetails] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    companyName: "",
-  });
-  const [captchaToken, setCaptchaToken] = useState(null);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answers, setAnswers] = useState({});
-  const [showOtherInput, setShowOtherInput] = useState(false);
-  const [toast, setToast] = useState({
-    isVisible: false,
-    message: "",
-    type: "success",
-  });
-  const [isSurveyCompleted, setIsSurveyCompleted] = useState(false);
-  const [isQualified, setIsQualified] = useState(false);
-
-  const showToast = (message, type = "success") => {
-    setToast({ isVisible: true, message, type });
-    setTimeout(() => setToast({ isVisible: false, message: "", type: "" }), 3000);
-  };
-
-  const questions = [
-    {
-      question: "Which of the following best describes your role in the business?",
-      type: "mcq",
-      options: [
-        "Entrepreneur (Self-employed or actively running a business)",
-        "Founder (Launched the business)",
-        "Co-founder (Owns at least 25% equity)",
-        "Business Partner (Owns at least 25% equity or actively involved in)",
-        "Employee",
-      ],
-      image: "https://example.com/images/question1.jpg",
-    },
-    {
-      question: "How long have you been operating your business?",
-      type: "mcq",
-      options: [
-        "Less than a year",
-        "1-3 years",
-        "3-5 years",
-        "5+ years",
-        "Other",
-      ],
-      image: "https://example.com/images/question2.jpg",
-    },
-    {
-      question: "How many full-time employees currently work in your business?",
-      type: "mcq",
-      options: [
-        "0 (No employees)",
-        "1 to 10 employees (Stage 1)",
-        "11 to 19 employees (Stage 2)",
-        "20 to 34 employees (Stage 3)",
-        "35 to 57 employees (Stage 4)",
-        "58 to 95 employees (Stage 5)",
-        "96 to 160 employees (Stage 6)",
-        "161 to 500 employees (Stage 7)",
-        "Other",
-      ],
-      image: "https://example.com/images/question3.jpg",
-    },
-    // Add more questions with respective images
-  ];
-
-  const validatePersonalDetails = () => {
-    const { firstName, lastName, email, companyName } = personalDetails;
-
-    if (!firstName || !lastName || !email || !companyName) {
-      showToast("Please fill out all fields to continue!", "error");
-      return false;
-    }
-
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailPattern.test(email)) {
-      showToast("Please enter a valid email address!", "error");
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleInputChange = (value) => {
-    setAnswers({
-      ...answers,
-      [currentQuestionIndex]: value,
-    });
-  };
-
-  const handleOptionChange = (value) => {
-    if (value === "Other") {
-      setShowOtherInput(true);
-      handleInputChange(""); // Reset input field if 'Other' is selected
-    } else {
-      setShowOtherInput(false);
-      handleInputChange(value);
-    }
-  };
-
-  const handleNext = () => {
-    if (!answers[currentQuestionIndex]) {
-      showToast("Please answer the current question before proceeding.", "error");
-      return; // Do not proceed if the answer is missing
-    }
-
-    if (
-      (currentQuestionIndex === 1 && answers[currentQuestionIndex] === "Less than a year") ||
-      (currentQuestionIndex === 0 && answers[currentQuestionIndex] === "Employee") ||
-      (currentQuestionIndex === 2 &&
-        (answers[currentQuestionIndex] === "0 (No employees)" ||
-          answers[currentQuestionIndex] === "1 to 10 employees (Stage 1)"))
-    ) {
-      handleSurveySubmit(false); // Not qualified
-    } else {
-      if (currentQuestionIndex < questions.length - 1) {
-        setCurrentQuestionIndex(currentQuestionIndex + 1);
-        setShowOtherInput(false);
-      }
-    }
-  };
-
-  const handlePrev = () => {
-    if (currentQuestionIndex > 0) {
-      setCurrentQuestionIndex(currentQuestionIndex - 1);
-      setShowOtherInput(false);
-    }
-  };
-
-  const handleSurveySubmit = async (qualified = true) => {
-    if (!captchaToken) {
-      showToast("Please complete the CAPTCHA verification before submitting.", "error");
-      return;
-    }
-
-    const combinedAnswers = Object.keys(answers).map((key) => ({
-      question: questions[key].question,
-      answer: answers[key],
-    }));
-
-    try {
-      const response = await fetch("http://localhost:4000/submit-survey", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          firstName: personalDetails.firstName,
-          lastName: personalDetails.lastName,
-          companyName: personalDetails.companyName,
-          email: personalDetails.email,
-          answers: combinedAnswers,
-          qualified,
-          captchaToken,
-        }),
-      });
-
-      const result = await response.json();
-      if (response.ok) {
-        showToast(result.message, "success");
-        setIsSurveyCompleted(true);
-        setIsQualified(qualified);
-      } else {
-        showToast(result.message, "error");
-      }
-    } catch (error) {
-      showToast("Error submitting survey response", "error");
-    }
-  };
-
-  const handlePersonalDetailsSubmit = () => {
-    if (validatePersonalDetails()) {
-      setIsSurveyStarted(true);
-    }
-  };
-
-  const currentQuestion = questions[currentQuestionIndex];
-
+const Impact = () => {
   return (
-    <div className="mt-16">
-      <Toast
-        message={toast.message}
-        type={toast.type}
-        isVisible={toast.isVisible}
-        onClose={() => setToast({ isVisible: false, message: "", type: "" })}
-      />
-
-      {isSurveyCompleted ? (
-        <div> {/* Survey Completed Code Here */} </div>
-      ) : !isSurveyStarted ? (
-        <div>
-          {/* Personal Details Section */}
+    <div id="Research" className=" px-2 lg:px-8 mx-auto">
+      <div className="bg-[#ffffff] dark:bg-[#0c0c0c] p-6 lg:p-10  my-12 w-full h-auto py-16 rounded-[40px]">
+        <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-5">
+          <div className="lg:col-span-2 flex text-center justify-center items-center">
+            <img
+              src="https://www.svgrepo.com/show/304720/star-prize-award.svg"
+              alt="impact"
+              className="lg:w-80 w-40 h-40 lg:h-80 object-cover"
+            />
+          </div>
+          <div className="lg:col-span-3">
+            <span className="gsans font-semibold text-[#0c0c0c] text-3xl lg:text-2xl">
+              Research Overview
+            </span>
+            <h1 className="gsans dark:text-[#ffffff] font-semibold mt-6  text-[#ff0000] text-2xl lg:text-5xl">
+              Redefining Entrepreneurial
+              <br /> Excellence
+            </h1>
+            <p className="small dark:text-[#989999] max-w-3xl mt-8 text-sm text-justify lg:text-xl text-gray-700">
+              We’re conducting a groundbreaking study to discover what drives
+              entrepreneurial success in today’s fast-changing world. Our goal
+              is to set modern benchmarks for excellence by analyzing the
+              traits, behaviors, and motivations of top successful entrepreneurs
+              and business leaders. <br/> 
+            </p>
+            <p className="font-bold bg-[#ff0000] p-8 mt-6 small text-2xl text-[#ffffff] rounded-3xl">
+              With only 1,000 spots available, we’re
+              inviting entrepreneurs like you to join this important research.
+                </p>
+            <h1 className="gsans dark:text-[#ffffff] font-semibold mt-14  text-[#0c0c0c] text-2xl lg:text-5xl">
+              Why Now?
+            </h1>
+            <p className="small dark:text-[#989999] mt-8 text-sm lg:text-xl text-justify text-gray-700">
+              The business world has evolved rapidly and understanding what
+              makes entrepreneurs thrive today is more important than ever. Your
+              input will help define the traits that shape the next generation
+              of successful entrepreneurs.
+            </p>
+          </div>
         </div>
-      ) : (
-        <div>
-          <img src={currentQuestion.image} alt={`Question ${currentQuestionIndex + 1}`} />
-        </div>
-      )}
+      </div>
     </div>
   );
 };
 
-export default QualiForm;
+export default Impact;

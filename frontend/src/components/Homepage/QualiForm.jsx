@@ -4,6 +4,7 @@ import Input from "../Reusables/Input";
 import Button from "../Reusables/Button";
 import Toast from "../Reusables/Toast";
 import ReCAPTCHA from "react-google-recaptcha";
+import Router from 'next/navigation';
 
 const QualiForm = () => {
   const [isSurveyStarted, setIsSurveyStarted] = useState(false);
@@ -38,9 +39,10 @@ const QualiForm = () => {
     {
       question:
         "Which of the following best describes your role in the business?",
+      image: "/role.jpg",
       type: "mcq",
       options: [
-        "Entrepreneur (Self-employed or actively running a business)",
+        "Entrepreneur (Actively running a business)",
         "Founder (Launched the business)",
         "Co-founder (Owns at least 25% equity)",
         "Business Partner (Owns at least 25% equity or actively involved in)",
@@ -49,17 +51,21 @@ const QualiForm = () => {
     },
     {
       question: "How long have you been operating your business?",
+      image: "/year.jpg",
       type: "mcq",
       options: [
         "Less than a year",
-        "1-3 years",
+
+        "1-2 years",
         "3-5 years",
-        "5+ years",
+        "5-10 years",
+        "10+ years",
         "Other",
       ],
     },
     {
       question: "How many full-time employees currently work in your business?",
+      image: "/employee.jpg",
       type: "mcq",
       options: [
         "0 (No employees)",
@@ -76,6 +82,7 @@ const QualiForm = () => {
     {
       question:
         "What is your average annual profitability (as a percentage of total revenue)?",
+      image: "/profitability.jpg",
       type: "mcq",
       options: [
         "Less than 10%",
@@ -88,39 +95,47 @@ const QualiForm = () => {
     },
     {
       question: "What type of business do you operate?",
+      image: "/industry.jpg",
       type: "text",
     },
     {
       question:
         "What is your primary product or service that generates more than 50% of your revenue?",
+      image: "/growth.jpg",
       type: "text",
     },
     {
       question: "Have you ever completed a Tri-Metrix HD Assessment?",
+      image: "/assesment.jpg",
+
       type: "mcq",
       options: ["Yes", "No"],
     },
     {
       question:
         "If No: Would you like us to provide complimentary access to this assessment?",
+      image: "/assesment.jpg",
       type: "mcq",
       options: ["Yes", "No"],
     },
     {
       question:
         "Would you like to join the Entrepreneur Edge Workshop to learn the 15 traits to become a successful entrepreneur? (This is a complimentary session valued at $2000.)",
+      image: "/workshop.jpg",
       type: "mcq",
       options: ["Yes", "No"],
     },
     {
       question:
         "Do you know other founders or entrepreneurs who might benefit from this research and workshop? If yes, please share their details below:",
+      image: "/share.jpg",
       type: "text",
     },
   ];
 
   const validatePersonalDetails = () => {
-    const { firstName, lastName, email, companyName,linkedInUrl } = personalDetails;
+    const { firstName, lastName, email, companyName, linkedInUrl } =
+      personalDetails;
 
     if (!firstName || !lastName || !email || !companyName) {
       showToast("Please fill out all fields to continue!", "error");
@@ -166,6 +181,8 @@ const QualiForm = () => {
     if (
       (currentQuestionIndex === 1 &&
         answers[currentQuestionIndex] === "Less than a year") ||
+      (currentQuestionIndex === 1 &&
+        answers[currentQuestionIndex] === "1-2 years") ||
       (currentQuestionIndex === 0 &&
         answers[currentQuestionIndex] === "Employee") ||
       (currentQuestionIndex === 2 &&
@@ -189,7 +206,10 @@ const QualiForm = () => {
   };
 
   const handleSurveySubmit = async (qualified = true) => {
-    if (!captchaToken) {
+    // Only require CAPTCHA if the user reaches Question 4 or later
+    const requiresCaptcha = currentQuestionIndex >= 3;
+
+    if (requiresCaptcha && !captchaToken) {
       showToast(
         "Please complete the CAPTCHA verification before submitting.",
         "error"
@@ -202,22 +222,29 @@ const QualiForm = () => {
       answer: answers[key],
     }));
 
+    // Create the payload dynamically
+    const payload = {
+      firstName: personalDetails.firstName,
+      lastName: personalDetails.lastName,
+      companyName: personalDetails.companyName,
+      email: personalDetails.email,
+      linkedInUrl: personalDetails.linkedInUrl,
+      answers: combinedAnswers,
+      qualified,
+    };
+
+    // Only add captchaToken if required
+    if (requiresCaptcha) {
+      payload.captchaToken = captchaToken;
+    }
+
     try {
       const response = await fetch("http://localhost:4000/submit-survey", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          firstName: personalDetails.firstName,
-          lastName: personalDetails.lastName,
-          companyName: personalDetails.companyName,
-          email: personalDetails.email,
-          linkedInUrl: personalDetails.linkedInUrl,
-          answers: combinedAnswers,
-          qualified,
-          captchaToken,
-        }),
+        body: JSON.stringify(payload),
       });
 
       const result = await response.json();
@@ -311,7 +338,7 @@ const QualiForm = () => {
                   }
                 />
                 <Input
-                  iconSrc="https://www.svgrepo.com/show/474079/profile.svg"
+                  iconSrc="https://www.svgrepo.com/show/488920/email.svg"
                   label="Email Address"
                   type="email"
                   labelClassName="dark:text-zinc-300"
@@ -325,7 +352,7 @@ const QualiForm = () => {
                   }
                 />
                 <Input
-                  iconSrc="https://www.svgrepo.com/show/474079/profile.svg"
+                  iconSrc="https://www.svgrepo.com/show/379127/company.svg"
                   label="Company Legal Name"
                   type="text"
                   labelClassName="dark:text-zinc-300"
@@ -339,19 +366,19 @@ const QualiForm = () => {
                   }
                 />
                 <Input
-  iconSrc="https://www.svgrepo.com/show/474079/profile.svg"
-  label="LinkedIn URL"
-  type="text"
-  labelClassName="dark:text-zinc-300"
-  className="dark:border-zinc-900 w-full text-[#0c0c0c] dark:text-[#ffffff] border rounded-3xl"
-  value={personalDetails.linkedInUrl}
-  onChange={(e) =>
-    setPersonalDetails({
-      ...personalDetails,
-      linkedInUrl: e.target.value,
-    })
-  }
-/>
+                  iconSrc="https://www.svgrepo.com/show/360535/linkedin.svg"
+                  label="LinkedIn URL"
+                  type="text"
+                  labelClassName="dark:text-zinc-300"
+                  className="dark:border-zinc-900 w-full text-[#0c0c0c] dark:text-[#ffffff] border rounded-3xl"
+                  value={personalDetails.linkedInUrl}
+                  onChange={(e) =>
+                    setPersonalDetails({
+                      ...personalDetails,
+                      linkedInUrl: e.target.value,
+                    })
+                  }
+                />
               </div>
               <Button
                 text="Start Survey"
@@ -362,7 +389,7 @@ const QualiForm = () => {
           </div>
           <div className="lg:col-span-3 hidden lg:block">
             <img
-              src="https://assets.lummi.ai/assets/QmSeCC2zQpkXzqBXNvYUgN2oMSgHMEXETYM3svdKFetjnD?auto=format&w=1500&h=1500"
+              src="/start.jpg"
               alt=""
               className="w-full h-[60svh] object-cover rounded-[45px]"
             />
@@ -440,7 +467,7 @@ const QualiForm = () => {
               )}
               {currentQuestionIndex === questions.length - 1 ? (
                 <>
-                <div className="flex items-center gap-6"></div>
+                  <div className="flex items-center gap-6"></div>
                   <Button
                     text="Submit"
                     onClick={() => handleSurveySubmit(true)} // Assume qualified if all questions answered
@@ -463,7 +490,7 @@ const QualiForm = () => {
           </div>
           <div className="lg:col-span-3 hidden lg:block">
             <img
-              src="https://images.unsplash.com/photo-1489743342057-3448cc7c3bb9"
+              src={currentQuestion.image} // Dynamically set the image based on the current question
               alt=""
               className="w-full h-[60svh] object-cover rounded-[45px]"
             />

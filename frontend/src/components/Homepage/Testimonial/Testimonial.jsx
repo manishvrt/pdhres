@@ -14,7 +14,7 @@ const Testimonial = () => {
                 </h2>
                 <p className=" small  lg:text-xl text-sm pt-3 text-gray-800 ">
                   Hear from entrepreneurs who’ve benefited from the Entrepreneur
-                  Edge Program
+                  Edge<sup>TM</sup> Program
                 </p>
               </div>
               <div className="grid px-2 lg:px-12 gap-4 lg:grid-cols-2 ">

@@ -47,40 +47,58 @@ const ServiceSlide = () => {
 
   return (
     <div className="lg:px-6 px-2 mt-12">
-      <div id="learn" className="bg-[#ffffff] rounded-[40px]  dark:bg-[#0c0c0c] h-auto">
-      <div className="grid grid-cols-1 gap-6 max-w-7xl mx-auto lg:grid-cols-5">
-        {/* Left Section - Sticky */}
-        <div className="lg:col-span-2 gsans mt-10 px-6 lg:px-0 lg:h-screen lg:sticky lg:top-0 flex flex-col lg:justify-center items-start">
-          
-          <h1 className="gsans mt-10 font-semibold tracking-tight text-5xl lg:text-7xl dark:text-[#ffffff] text-[#0c0c0c]">
-            The <span className="text-[#ff0000]">Entrepreneur Edge (EE)</span> Program 
-          </h1>
-          <h1 className="gsans mt-10 font-semibold tracking-tight text-2xl lg:text-4xl dark:text-[#ffffff] text-[#0c0c0c]">
-          (Valued at $2,000)
-          </h1>
-        </div>
+      <div id="learn" className="bg-[#ffffff] rounded-[40px]   h-auto">
+        <div className="grid grid-cols-1 gap-6 max-w-7xl mx-auto lg:grid-cols-5">
+          {/* Left Section - Sticky */}
+          <div className="lg:col-span-2 gsans mt-10 px-6 lg:px-0 lg:h-screen lg:sticky lg:top-0 flex flex-col lg:justify-center items-start">
+            <img
+              src="/eelogo.png"
+              alt="arrow"
+              className="lg:w-72 w-60 h-28  lg:h-36 rounded-3xl object-fill"
+            />
+            <h1 className="gsans mt-10 font-semibold  tracking-wider text-5xl lg:text-6xl  text-[#0c0c0c]">
+              The{" "}
+              <span className="text-[#ff0000]">Entrepreneur Edge™ (EE)</span>{" "}
+              Program
+            </h1>
+            <h1 className="small mt-10 font-semibold text-2xl lg:text-[20px] text-[#0c0c0c]">
+              Don’t miss out! Complete the survey now to get{" "}
+              <span className="text-[#ff0000] ">
+                Complimentary access to the EE Program{" "}
+              </span>{" "}
+              - $2,000 applies after July 1, 2025!{" "}
+            </h1>
+          </div>
 
-        {/* Right Section - Scrollable Content */}
-        <div className="lg:col-span-3 p-2 lg:p-4 overflow-y-auto">
-          <div className="flex flex-col gap-6 mt-16 lg:mt-32 mb-20">
-            {packageData?.map((data, index) => (
-              <div
-                ref={(el) => (serviceCardsRef.current[index] = el)}
-                key={index}
-              >
-                <PackageCard
-                  imgSrc={data.imgSrc}
-                  title={data.title}
-                  desc={data.desc}
-                />
-              </div>
-            ))}
+          {/* Right Section - Scrollable Content */}
+          <div className="lg:col-span-3 p-2 lg:p-4 overflow-y-auto">
+            <div className="flex flex-col gap-6 mt-16 lg:mt-32 mb-20">
+              {packageData?.map((data, index) => (
+                <div
+                  ref={(el) => (serviceCardsRef.current[index] = el)}
+                  key={index}
+                >
+                  <PackageCard
+                    imgSrc={data.imgSrc}
+                    title={data.title}
+                    trait1={data.trait1}
+                    trait2={data.trait2}
+                    trait3={data.trait3}
+                    traitheading1={data.traitheadin1}
+                    traitheading2={data.traitheadin2}
+                    traitheading3={data.traitheadin3}
+                    desc={data.desc}
+                    desc1={data.desc1}
+                    desc2={data.desc2}
+                    desc3={data.desc3}
+                  />
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>
     </div>
-    </div>
-    
   );
 };
 

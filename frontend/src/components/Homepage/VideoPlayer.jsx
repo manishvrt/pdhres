@@ -1,88 +1,72 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import Vimeo from "@vimeo/player";
 
 const VideoPlayer = () => {
-  const videoRef = useRef(null);
+  const iframeRef = useRef(null);
+  const [player, setPlayer] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [volume, setVolume] = useState(1); // Volume range is 0.0 to 1.0
   const [isLoading, setIsLoading] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  const handlePlayPause = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-      } else {
-        videoRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
-  };
-
-  const handleMuteToggle = () => {
-    if (videoRef.current) {
-      videoRef.current.muted = !isMuted;
-      setIsMuted(!isMuted);
-    }
-  };
-
-  const handleVolumeChange = (e) => {
-    const newVolume = e.target.value;
-    if (videoRef.current) {
-      videoRef.current.volume = newVolume;
-      setVolume(newVolume);
-    }
-  };
-
-  const handleFullscreenToggle = () => {
-    if (videoRef.current) {
-      if (document.fullscreenElement) {
-        document.exitFullscreen();
-      } else {
-        videoRef.current.requestFullscreen();
-      }
-    }
-  };
-
-  const handleLoading = () => {
-    if (videoRef.current) {
-      setIsLoading(true);
-    }
-  };
-
-  const handleLoaded = () => {
-    setIsLoading(false);
-  };
-
   useEffect(() => {
-    const video = videoRef.current;
-    if (video) {
-      video.addEventListener("waiting", handleLoading);
-      video.addEventListener("playing", handleLoaded);
+    if (iframeRef.current) {
+      const vimeoPlayer = new Vimeo(iframeRef.current);
+      setPlayer(vimeoPlayer);
+
+      vimeoPlayer.on("play", () => setIsPlaying(true));
+      vimeoPlayer.on("pause", () => setIsPlaying(false));
+      vimeoPlayer.on("bufferstart", () => setIsLoading(true));
+      vimeoPlayer.on("bufferend", () => setIsLoading(false));
+
+      vimeoPlayer.getMuted().then((muted) => setIsMuted(muted));
     }
-    return () => {
-      if (video) {
-        video.removeEventListener("waiting", handleLoading);
-        video.removeEventListener("playing", handleLoaded);
-      }
-    };
   }, []);
+
+  const handlePlayPause = async () => {
+    if (player) {
+      const status = await player.getPaused();
+      if (status) {
+        await player.play();
+      } else {
+        await player.pause();
+      }
+    }
+  };
+
+  const handleMuteToggle = async () => {
+    if (player) {
+      const muted = await player.getMuted();
+      await player.setMuted(!muted);
+      setIsMuted(!muted);
+    }
+  };
+
+  const handleFullscreenToggle = async () => {
+    if (player) {
+      await player.requestFullscreen();
+    }
+  };
 
   return (
     <div
-      className="relative w-full h-full lg:rounded-[40px] overflow-hidden group"
+      className="relative  w-full h-full lg:rounded-[40px] overflow-hidden group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Video Element */}
-      <video
-        ref={videoRef}
-        src="/messagev.mp4"
-        className="w-full object-center h-full object-fill"
-        controls={false} // Disable default controls
-      />
+      {/* Vimeo Embed */}
+      <div className="w-full h-full">
+        <iframe
+          ref={iframeRef}
+          src="https://player.vimeo.com/video/1051855319?h=09cc5f47ad&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+          frameBorder="0"
+          allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media"
+          className="absolute top-0 left-0 w-full h-full"
+          title="EE Landing Page Video"
+        ></iframe>
+      </div>
 
       {/* Loading Spinner */}
       {isLoading && (
@@ -91,45 +75,9 @@ const VideoPlayer = () => {
         </div>
       )}
 
-      {/* Center Play/Pause Icon */}
-      {isHovered && !isLoading && (
-        <button
-          onClick={handlePlayPause}
-          className="absolute inset-0 flex items-center justify-center bg-black/50 group-hover:opacity-100"
-        >
-          {isPlaying ? (
-            <img src="/pause.svg" alt="Pause" className="w-16 h-16" />
-          ) : (
-            <img src="/play.svg" alt="Play" className="w-16 h-16" />
-          )}
-        </button>
-      )}
-
+      
       {/* Custom Controls */}
-      <div className="absolute bottom-0 left-0 w-full bg-black/30 text-white p-3 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        {/* Play/Pause Button */}
-        
-
-        {/* Mute/Unmute Button */}
-        <button
-          onClick={handleMuteToggle}
-          className="px-4 py-2 text-white flex items-center justify-center"
-        >
-          {isMuted ? (
-            <img src="/soundoff.svg" alt="Sound Off" className="w-6 h-6" />
-          ) : (
-            <img src="/soundon.svg" alt="Sound On" className="w-6 h-6" />
-          )}
-        </button>
-
-        {/* Fullscreen Button */}
-        <button
-          onClick={handleFullscreenToggle}
-          className="px-4 py-2 text-white flex items-center justify-center"
-        >
-          <img src="/fullscreen.svg" alt="Fullscreen" className="w-5 h-5" />
-        </button>
-      </div>
+      
     </div>
   );
 };
