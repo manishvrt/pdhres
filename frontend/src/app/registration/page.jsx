@@ -289,11 +289,11 @@ const Page = () => {
                   )}
                 </div>
               </div>
-              <div className="flex gap-8 items-center">
+              <div className="flex gap-8 mt-10 items-center">
               <div className="relative w-1/2 ">
                 <CustomInput
                   iconSrc="https://www.svgrepo.com/show/374829/coupon-codes.svg"
-                  className={`border-2  border-dashed  mt-10 w-full rounded-3xl`}
+                  className={`border-2  border-dashed   w-full rounded-3xl`}
                   type="text"
                   label="Enter Coupon Code"
                   value={coupon}
