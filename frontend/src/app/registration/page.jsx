@@ -335,7 +335,7 @@ const Page = () => {
               </div>
 
               {/* Add Turnstile CAPTCHA */}
-              <div className="mt-6">
+              <div className="">
                 <Turnstile
                   sitekey="0x4AAAAAAA-abqSXrUHkdgIt" // Replace with your Cloudflare Turnstile site key
                   onVerify={(token) => setCaptchaToken(token)} // Store the CAPTCHA token
