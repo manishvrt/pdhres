@@ -401,8 +401,8 @@ const Page = () => {
           </div>
         </div>
       ) : (
-        // Thank You Page (Only Right Side)
-        <div className="col-span-4 bg-[#ffffff] flex flex-col justify-center h-screen items-start w-full p-16">
+        <div className="grid w-full grid-cols-5">
+          <div className="col-span-3 bg-[#ffffff] flex flex-col justify-center h-screen items-start w-full p-16">
           <div>
             <img src="/vrtlogo.png" className="w-44 h-24" alt="Logo" />
           </div>
@@ -433,6 +433,12 @@ const Page = () => {
             🚀 See you in the session!{" "}
           </span>
         </div>
+        <div className="col-span-2">
+
+        </div>
+        </div>
+        // Thank You Page (Only Right Side)
+        
       )}
     </div>
   );
