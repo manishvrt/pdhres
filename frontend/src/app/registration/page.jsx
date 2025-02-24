@@ -289,6 +289,7 @@ const Page = () => {
                   )}
                 </div>
               </div>
+              <div className="flex gap-8 items-center">
               <div className="relative w-1/2 ">
                 <CustomInput
                   iconSrc="https://www.svgrepo.com/show/374829/coupon-codes.svg"
@@ -339,6 +340,7 @@ const Page = () => {
                   sitekey="0x4AAAAAAA-abqSXrUHkdgIt" // Replace with your Cloudflare Turnstile site key
                   onVerify={(token) => setCaptchaToken(token)} // Store the CAPTCHA token
                 />
+              </div>
               </div>
 
               <div className="flex gap-4">
