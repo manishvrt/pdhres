@@ -34,7 +34,7 @@ const scrollToResearch = () => {
 
               <div class="relative px-4 pt-24 pb-16 text-center sm:px-6 md:px-24 2xl:px-32 lg:py-24 lg:text-left">
                 <h1 class="text-4xl gsans font-bold text-black sm:text-6xl xl:text-8xl">
-                Shape the Future of Entrepreneurial Success with Us
+                Shape the Future of Entrepreneurial Success
                 </h1>
                 <p class="mt-8 text-xl text-black">
                   We help you to make your remote work life easier. Build a

@@ -54,9 +54,9 @@ const ServiceSlide = () => {
             <img
               src="/eelogo.png"
               alt="arrow"
-              className="lg:w-72 w-60 h-28  lg:h-36 rounded-3xl object-fill"
+              className="lg:w-64 w-60 h-28  lg:h-32 rounded-3xl object-fill"
             />
-            <h1 className="gsans mt-10 font-semibold  tracking-wider text-5xl lg:text-6xl  text-[#0c0c0c]">
+            <h1 className="gsans mt-10 font-semibold  tracking-wider text-5xl lg:text-5xl  text-[#0c0c0c]">
               The{" "}
               <span className="text-[#ff0000]">Entrepreneur Edge™ (EE)</span>{" "}
               Program
@@ -64,9 +64,9 @@ const ServiceSlide = () => {
             <h1 className="small mt-10 font-semibold text-2xl lg:text-[20px] text-[#0c0c0c]">
               Don’t miss out! Complete the survey now to get{" "}
               <span className="text-[#ff0000] ">
-                Complimentary access to the EE Program{" "}
-              </span>{" "}
-              - $2,000 applies after July 1, 2025!{" "}
+                Complimentary access to the EE Program.{" "}
+              </span>{" "}<br/>
+              $2,000 applies after July 1, 2025!{" "}
             </h1>
           </div>
 

@@ -35,7 +35,7 @@ const Hero = () => {
 
               <div className="relative  lg:py-12   text-center  2xl:px-12 lg:text-left">
                 <h1 className="text-3xl mt-12 lg:mt-0 gsans font-bold text-black  xl:text-5xl">
-                  Shape the future of Entrepreneurial success with us through
+                  Shape the future of Entrepreneurial success through
                   research
                 </h1>
                 <p className="mt-8 px-4 tracking-tight lg:px-0 text-sm lg:text-lg text-justify small text-black">

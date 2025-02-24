@@ -3,6 +3,7 @@ import CustomInput from "@/components/Reusables/CustomInput";
 import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Confetti from "react-confetti";
+import Turnstile from "react-turnstile";
 
 const Page = () => {
   const [step, setStep] = useState(1);
@@ -13,6 +14,7 @@ const Page = () => {
     email: "",
   });
   const [isCouponApplied, setIsCouponApplied] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(""); // State to store CAPTCHA token
   const priceRef = useRef(null);
   const strikeThroughRef = useRef(null);
 
@@ -27,7 +29,6 @@ const Page = () => {
 
   useEffect(() => {
     if (isCouponApplied) {
-      // Animate the price change and strikethrough
       gsap.fromTo(
         priceRef.current,
         { opacity: 0, y: -20 },
@@ -76,8 +77,34 @@ const Page = () => {
     setIsCouponApplied(false);
   };
 
-  const handleFinalSubmit = () => {
-    setStep(3); // Move to the Thank You page
+  const handleFinalSubmit = async () => {
+    if (!captchaToken) {
+      alert("Please complete the CAPTCHA");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          captchaToken, // Include CAPTCHA token in the request
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStep(3); // Move to the Thank You page
+      } else {
+        setErrors({ email: data.message });
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
   };
 
   return (
@@ -247,6 +274,15 @@ const Page = () => {
                   </button>
                 )}
               </div>
+
+              {/* Add Turnstile CAPTCHA */}
+              <div className="mt-6">
+                <Turnstile
+                  sitekey="0x4AAAAAAA-abqSXrUHkdgIt" // Replace with your Cloudflare Turnstile site key
+                  onVerify={(token) => setCaptchaToken(token)} // Store the CAPTCHA token
+                />
+              </div>
+
               <div className="flex gap-4">
                 <button
                   onClick={handlePrevious}

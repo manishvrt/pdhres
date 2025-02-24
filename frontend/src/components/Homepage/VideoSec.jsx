@@ -18,7 +18,7 @@ const VideoSec = () => {
           <div className="mx-auto p-6">
             <h1 className="lg:text-5xl text-3xl  lg:p-0 text-[#0c0c0c]   font-bold gsans">
               A Message from Our Visionary Leader on Future Entrepreneurial
-              Success & Growth
+              Success and Growth
             </h1>
             <p className="small lg:text-lg tracking-wide text-sm py-6 text-[#0c0c0c]">
               Hear from Business Growth Expert with{" "}
