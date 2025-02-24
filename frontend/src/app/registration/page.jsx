@@ -122,14 +122,61 @@ const Page = () => {
           initialVelocityY={{ min: -10, max: 10 }}
         />
       )}
-      <div className="grid w-full grid-cols-6">
-        <div className="col-span-2 p-10 w-full flex flex-col justify-between h-screen">
+      <div className="grid w-full grid-cols-7">
+        <div className="col-span-3 p-10 w-full flex flex-col justify-between h-screen">
           <div>
             <img src="/vrtlogo.png" className="w-44 h-24" alt="Logo" />
-            <h1 className="mt-10 text-4xl font-semibold gsans text-[#0c0c0c]">
-              Use mobile app for better performance
-            </h1>
           </div>
+          <div>
+            <h1 className=" text-3xl font-semibold gsans text-[#0c0c0c]">
+              Here’s What You’ll Gain Inside EE™:
+            </h1>
+            <div className="flex mt-8 flex-col">
+              <div className="flex items-center gap-4">
+                <img src="/check.svg" alt="" className="w-5 h-5" />
+                <h2 className="small text-[#0c0c0c]">
+                  <strong>Deep Leadership Insights</strong> – Learn how to
+                  leverage your natural strengths and decision-making style to
+                  drive business success.{" "}
+                </h2>
+              </div>
+              <div className="flex mt-3 items-center gap-4">
+                <img src="/check.svg" alt="" className="w-5 h-5" />
+                <h2 className="small text-[#0c0c0c]">
+                  <strong>Master Dynamic Communication</strong> – Improve how
+                  you <strong>communicate, negotiate, and influence</strong> to
+                  build trust and strong relationships.
+                </h2>
+              </div>
+              <div className="flex mt-3 items-center gap-4">
+                <img src="/check.svg" alt="" className="w-5 h-5" />
+                <h2 className="small text-[#0c0c0c]">
+                  <strong>Discover Your Decision-Making Style</strong> –
+                  Understand how you approach decisions, handle challenges, and
+                  assess risks, so you can
+                  <strong>
+                    {" "}
+                    make clearer, more confident choices that drive business
+                    success
+                  </strong>
+                  .
+                </h2>
+              </div>
+              <div className="flex mt-3 items-center gap-4">
+                <img src="/check.svg" alt="" className="w-5 h-5" />
+                <h2 className="small text-[#0c0c0c]">
+                  <strong>Live Mentoring & Strategy Session</strong> – Get
+                  direct guidance from{" "}
+                  <strong className="text-[#ff0000]">
+                    Rajesh Tedla (35+ years of business expertise)
+                  </strong>{" "}
+                  in a <strong>3-hour interactive session</strong> tailored to
+                  help you apply research-backed leadership strategies.
+                </h2>
+              </div>
+            </div>
+          </div>
+
           <div>
             <h1 className="mt-10 text-sm tracking-tight text-[#0c0c0c]">
               All Right Reserved. VRT Management Group
@@ -138,8 +185,18 @@ const Page = () => {
         </div>
 
         <div className="col-span-4 bg-[#ffffff] flex flex-col justify-center items-start w-full p-10">
+          <h1 className="text-3xl font-semibold gsans text-[#ff0000]">
+            Welcome to Entrepreneur Edge™ (EE™) – Your Leadership Breakthrough
+            Starts Here!
+          </h1>
+          <p className="small text-[16px] tracking-tight text-[#0c0c0c] mt-3">
+            You’re just one step away from unlocking exclusive access to the
+            Entrepreneur Edge™ (EE™) Program - an elite leadership experience
+            designed to help you lead smarter, execute faster, and scale with
+            confidence.
+          </p>
           {step < 3 && (
-            <div className="relative w-full h-4 bg-gray-300 rounded-full overflow-hidden mb-16">
+            <div className="relative mt-10 w-full h-4 bg-gray-300 rounded-full overflow-hidden mb-10">
               <div className="progress-bar h-full bg-[#ff0000] w-0"></div>
             </div>
           )}
@@ -147,10 +204,10 @@ const Page = () => {
           {step === 1 && (
             <>
               <h1 className="text-3xl font-semibold gsans text-[#0c0c0c]">
-                Professional Details
+                Fill in Your Details
               </h1>
               <p className="mt-3 text-md small text-[#0c0c0c]">
-                Tell us about your professional details.
+                Enter your details to claim your discount.
               </p>
               <form className="grid w-full grid-cols-1 mt-10 gap-4">
                 <div className="flex flex-col">
@@ -246,7 +303,8 @@ const Page = () => {
 
                 {isCouponApplied ? (
                   <p className="text-md  mt-3 small text-green-500">
-                    🎉 Coupon Applied Successfully! You saved <strong>$2000</strong>
+                    🎉 Coupon Applied Successfully! You saved{" "}
+                    <strong>$2000</strong>
                   </p>
                 ) : (
                   ""
