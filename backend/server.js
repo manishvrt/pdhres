@@ -28,7 +28,9 @@ db.once("open", () => {
 const userSchema = new mongoose.Schema({
   fullName: String,
   email: { type: String, unique: true },
+  couponCode: { type: String, unique: true }, // Ensure unique coupon codes
 });
+
 
 const User = mongoose.model("User", userSchema);
 
@@ -41,9 +43,26 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-// API Endpoint to Handle Form Submission
+
+app.post("/check-coupon", async (req, res) => {
+  const { coupon } = req.body;
+
+  try {
+    // Check if the coupon has already been used
+    const existingCoupon = await User.findOne({ couponCode: coupon });
+    if (existingCoupon) {
+      return res.status(200).json({ isUsed: true });
+    } else {
+      return res.status(200).json({ isUsed: false });
+    }
+  } catch (error) {
+    console.error("Error checking coupon:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 app.post("/submit", async (req, res) => {
-  const { fullName, email, captchaToken } = req.body;
+  const { fullName, email, captchaToken, coupon } = req.body;
 
   try {
     // Verify CAPTCHA token with Cloudflare
@@ -55,26 +74,31 @@ app.post("/submit", async (req, res) => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          secret: process.env.TURNSTILE_SECRET_KEY, // Your Turnstile secret key
+          secret: process.env.TURNSTILE_SECRET_KEY,
           response: captchaToken,
         }),
       }
     );
 
     const captchaData = await captchaResponse.json();
-
     if (!captchaData.success) {
       return res.status(400).json({ message: "CAPTCHA verification failed" });
     }
 
-    // Check for duplicate email
+    // Check if the email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "Email already exists" });
     }
 
-    // Save user to database
-    const newUser = new User({ fullName, email });
+    // Check if the coupon has already been used
+    const existingCoupon = await User.findOne({ couponCode: coupon });
+    if (existingCoupon) {
+      return res.status(400).json({ message: "Coupon already used" });
+    }
+
+    // Save the user with the coupon code
+    const newUser = new User({ fullName, email, couponCode: coupon });
     await newUser.save();
 
     // Send acknowledgement email
@@ -82,7 +106,7 @@ app.post("/submit", async (req, res) => {
       from: process.env.EMAIL_USER,
       to: process.env.ACKNOWLEDGEMENT_EMAIL,
       subject: "New Coupon Application",
-      text: `Someone has applied for the coupon:\n\nName: ${fullName}\nEmail: ${email}`,
+      text: `Someone has applied for the coupon:\n\nName: ${fullName}\nEmail: ${email}\nCoupon Code: ${coupon}`,
     };
 
     await transporter.sendMail(adminMailOptions);
@@ -93,6 +117,7 @@ app.post("/submit", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
 
 // Start Server
 app.listen(PORT, () => {

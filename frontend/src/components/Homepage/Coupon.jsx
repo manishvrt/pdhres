@@ -14,122 +14,15 @@ const Page = () => {
     email: "",
   });
   const [isCouponApplied, setIsCouponApplied] = useState(false);
-  const [captchaToken, setCaptchaToken] = useState(""); // State to store CAPTCHA token
-  const [firstName, setFirstName] = useState(""); // State to store user's first name
-  const [loading, setLoading] = useState(false); // State to manage loader visibility
+  const [captchaToken, setCaptchaToken] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [loading, setLoading] = useState(false);
   const priceRef = useRef(null);
   const strikeThroughRef = useRef(null);
 
-  useEffect(() => {
-    if (step < 3) {
-      gsap.to(".progress-bar", {
-        width: `${(step / 2) * 100}%`,
-        duration: 0.5,
-      });
-    }
-  }, [step]);
-
-  useEffect(() => {
-    if (isCouponApplied) {
-      gsap.fromTo(
-        priceRef.current,
-        { opacity: 0, y: -20 },
-        { opacity: 1, y: 0, duration: 0.5 }
-      );
-      gsap.fromTo(
-        strikeThroughRef.current,
-        { scaleX: 0 },
-        { scaleX: 1, duration: 0.5, delay: 0.5 }
-      );
-    }
-  }, [isCouponApplied]);
-
-  const validateStep1 = () => {
-    const newErrors = {};
-    if (!formData.fullName) newErrors.fullName = "Full Name is required";
-    if (!formData.email) newErrors.email = "Email is required";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleNext = () => {
-    if (step === 1 && !validateStep1()) return;
-    if (step === 1) {
-      setFirstName(formData.fullName.split(" ")[0]); // Get the first name from full name
-    }
-    setStep((prev) => prev + 1);
-  };
-
-  const handlePrevious = () => {
-    setStep((prev) => prev - 1);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const generateCoupons = () => {
-    const coupons = new Set();
-    const prefix = "VRTEE2025";
-  
-    for (let i = 0; i < 20; i++) { // A to T (20 letters)
-      const letter = String.fromCharCode(65 + i); // Convert index to A, B, C ... T
-      for (let j = 1; j <= 10; j++) {
-        const num = j.toString().padStart(2, "0"); // Ensure 2-digit format
-        coupons.add(`${prefix}${letter}${num}`);
-      }
-    }
-    return coupons;
-  };
-  
-  const validCoupons = generateCoupons();
-  
   const handleCouponSubmit = async () => {
-    if (validCoupons.has(coupon)) {
-      try {
-        const response = await fetch("http://localhost:5000/check-coupon", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ coupon }),
-        });
-  
-        const data = await response.json();
-  
-        if (response.ok) {
-          if (data.isUsed) {
-            alert("This coupon has already been used.");
-          } else {
-            setIsCouponApplied(true);
-          }
-        } else {
-          alert("Error checking coupon status.");
-        }
-      } catch (error) {
-        console.error("Error checking coupon:", error);
-        alert("An error occurred while checking the coupon.");
-      }
-    } else {
-      alert("Invalid coupon code");
-    }
-  };
-  
+    const couponToCheck = coupon.trim().toUpperCase();
 
-  const handleRemoveCoupon = () => {
-    setCoupon("");
-    setIsCouponApplied(false);
-  };
-
-  const handleFinalSubmit = async () => {
-    if (!captchaToken) {
-      alert("Please complete the CAPTCHA");
-      return;
-    }
-  
-    setLoading(true); // Show loader when submission starts
-  
     try {
       const response = await fetch("http://localhost:5000/submit", {
         method: "POST",
@@ -137,26 +30,63 @@ const Page = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          ...formData,
-          captchaToken, // Include CAPTCHA token in the request
-          coupon, // Send the coupon code to the backend
+          fullName: formData.fullName,
+          email: formData.email,
+          captchaToken,
+          couponCode: couponToCheck,
         }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
-        setStep(3); // Move to the Thank You page
+        setIsCouponApplied(true);
+        setErrors({});
       } else {
-        alert(data.message); // Show error message
+        setErrors({ coupon: data.message });
+      }
+    } catch (error) {
+      console.error("Error submitting coupon:", error);
+      setErrors({ coupon: "Internal server error" });
+    }
+  };
+
+  const handleFinalSubmit = async () => {
+    if (!captchaToken) {
+      alert("Please complete the CAPTCHA");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const response = await fetch("http://localhost:5000/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fullName: formData.fullName,
+          email: formData.email,
+          captchaToken,
+          couponCode: coupon,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setStep(3);
+      } else {
+        setErrors({ email: data.message });
       }
     } catch (error) {
       console.error("Error submitting form:", error);
     } finally {
-      setLoading(false); // Hide loader when submission ends
+      setLoading(false);
     }
   };
-  
+
   return (
     <div className="flex justify-center items-center h-screen">
       {(isCouponApplied || step === 3) && (
@@ -172,7 +102,6 @@ const Page = () => {
           initialVelocityY={{ min: -10, max: 10 }}
         />
       )}
-      {/* Conditionally render the layout based on the step */}
       {step !== 3 ? (
         <div className="grid w-full grid-cols-7">
           {/* Left Side */}
@@ -180,9 +109,8 @@ const Page = () => {
             <div>
               <img src="/vrtlogo.png" className="w-44 h-24" alt="Logo" />
             </div>
-           
-              <div>
-              <h1 className=" text-3xl font-semibold gsans text-[#0c0c0c]">
+            <div>
+              <h1 className="text-3xl font-semibold gsans text-[#0c0c0c]">
                 Here’s What You’ll Gain Inside EE™:
               </h1>
               <div className="flex mt-8 flex-col">
@@ -191,7 +119,7 @@ const Page = () => {
                   <h2 className="small text-[#0c0c0c]">
                     <strong>Deep Leadership Insights</strong> – Learn how to
                     leverage your natural strengths and decision-making style to
-                    drive business success.{" "}
+                    drive business success.
                   </h2>
                 </div>
                 <div className="flex mt-3 items-center gap-4">
@@ -230,8 +158,6 @@ const Page = () => {
                 </div>
               </div>
             </div>
-             
-
             <div>
               <h1 className="mt-10 text-sm tracking-tight text-[#0c0c0c]">
                 All Right Reserved. VRT Management Group
@@ -280,7 +206,9 @@ const Page = () => {
                       label="Enter your Full Name"
                       type="text"
                       value={formData.fullName}
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setFormData({ ...formData, fullName: e.target.value })
+                      }
                     />
                     {errors.fullName && (
                       <p className="text-[#ff0000] text-sm small ml-2 mt-3">
@@ -297,7 +225,9 @@ const Page = () => {
                       label="Enter your Email"
                       type="email"
                       value={formData.email}
-                      onChange={handleChange}
+                      onChange={(e) =>
+                        setFormData({ ...formData, email: e.target.value })
+                      }
                     />
                     {errors.email && (
                       <p className="text-[#ff0000] text-sm small ml-2 mt-3">
@@ -372,7 +302,11 @@ const Page = () => {
                       <strong>$2000</strong>
                     </p>
                   ) : (
-                    ""
+                    errors.coupon && (
+                      <p className="text-sm mt-3 small text-[#ff0000]">
+                        {errors.coupon}
+                      </p>
+                    )
                   )}
 
                   {isCouponApplied && (
@@ -402,7 +336,7 @@ const Page = () => {
                 <div className="">
                   <Turnstile
                     sitekey="0x4AAAAAAA-abqSXrUHkdgIt" // Replace with your Cloudflare Turnstile site key
-                    onVerify={(token) => setCaptchaToken(token)} // Store the CAPTCHA token
+                    onVerify={(token) => setCaptchaToken(token)}
                   />
                 </div>
 
@@ -424,7 +358,7 @@ const Page = () => {
                     <button
                       onClick={handleFinalSubmit}
                       className="relative px-10 py-3 small text-white bg-[#ff0000] rounded-3xl mt-10"
-                      disabled={loading} // Disable button while loading
+                      disabled={loading}
                     >
                       {loading ? (
                         <>
@@ -443,12 +377,12 @@ const Page = () => {
         </div>
       ) : (
         <div className="grid w-full grid-cols-5">
-          <div className="col-span-3 bg-[#ffffff] flex flex-col justify-center h-screen items-start w-full p-16">
+        <div className="col-span-3 bg-[#ffffff] flex flex-col justify-center h-screen items-start w-full p-16">
           <div>
             <img src="/vrtlogo.png" className="w-44 h-24" alt="Logo" />
           </div>
           <h1 className="text-4xl text-[#0c0c0c] mt-12 gsans font-semibold w-full">
-            Congratulations 🎉, <span className="text-[#ff0000]">{firstName}</span>{" "}!
+            Congratulations 🎉, <span className="text-[#ff0000]">{firstName}</span>!
             <br /> You’ve Successfully Unlocked Your Entrepreneur Edge™ Program
             Access!
           </h1>
@@ -466,23 +400,19 @@ const Page = () => {
             <img src="/check.svg" alt="" className="w-5 h-5" />
             <h2 className="small text-lg tracking-tight text-[#0c0c0c]">
               Accept the invite to secure your spot in the Entrepreneur Edge™
-              Live Mentoring Session on <strong className="text-[#ff0000]">March 6th, 2025, at 10 AM EST With Rajesh  Tedla</strong>.
-             
+              Live Mentoring Session on{" "}
+              <strong className="text-[#ff0000]">March 6th, 2025, at 10 AM EST With Rajesh Tedla</strong>.
             </h2>
           </div>
           <span className="text-xl gsans font-semibold mt-16 text-[#0c0c0c] tracking-wide">
             🚀 See you in the session!{" "}
           </span>
         </div>
-        <div className="col-span-2">
-
-        </div>
-        </div>
-        // Thank You Page (Only Right Side)
-        
-      )}
-    </div>
-  );
-};
-
-export default Page;
+        <div className="col-span-2"></div>
+      </div>
+         )}
+         </div>
+       );
+     };
+     
+     export default Page;
